@@ -12,14 +12,18 @@ bl_info = {
 
 import bpy
 from bpy.types import Operator, Panel
+from .settings import *
 from .add_textures.add_octane_textures_op import *
+
 
 addon_keymaps = []
 kmi_defs = (
-    (NWAddOctaneTextures.bl_idname, 'T', 'PRESS', True, True, False, None, "Add Principled texture setup"),
+    (NWAddOctaneTextures.bl_idname, 'T', 'PRESS', True, True, False, None, "Add Octane textures"),
 )
 
 classes = (
+    NWOctaneTexturesTags,
+    NWOctanePreferences,
     NWAddOctaneTextures,
 )
 
