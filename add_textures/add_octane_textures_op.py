@@ -12,7 +12,7 @@ from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
 from mathutils import Vector
 from os import path
-from ..utils import get_addon_prefs
+from ..utils import get_node_inputs_with_tags
 
 def check_space(context):
     space = context.space_data
@@ -76,9 +76,11 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             self.report({'INFO'}, 'Select Principled BSDF')
             return {'CANCELLED'}
 
-        addon_prefs = get_addon_prefs(context)
+        node_inputs_with_tags = get_node_inputs_with_tags()
 
         # TODO: tags
+        for input_name, input in node_inputs_with_tags.items():
+            print(input_name, input)
 
         new_texture_nodes = []
         for texture_file in self.files:
@@ -96,6 +98,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             old_node = node
 
         # TODO: create links
+        link = links.new(active_node.inputs["Base Color"], new_texture_nodes[0].outputs[0])
 
         return {'FINISHED'}
 
