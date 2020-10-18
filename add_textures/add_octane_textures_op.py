@@ -10,6 +10,8 @@ from bpy.props import (
 )
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
+from mathutils import Vector
+from os import path
 from ..utils import get_addon_prefs
 
 def check_space(context):
@@ -76,6 +78,20 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         addon_prefs = get_addon_prefs(context)
 
+        new_texture_nodes = []
+        for texture_file in self.files:
+            texture_node = nodes.new(type="ShaderNodeTexImage")
+            if texture_file.name != '':
+                img = bpy.data.images.load(path.join(self.directory, texture_file.name))
+                texture_node.image = img
+                new_texture_nodes.append(texture_node)
+
+        old_node = new_texture_nodes[0]
+        old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
+        for node in new_texture_nodes:
+            node.location = old_node.location - Vector((0, 300))
+
+            old_node = node
 
         return {'FINISHED'}
 
