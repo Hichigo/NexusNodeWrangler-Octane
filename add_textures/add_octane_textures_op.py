@@ -10,6 +10,7 @@ from bpy.props import (
 )
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
+from ..utils import get_addon_prefs
 
 def check_space(context):
     space = context.space_data
@@ -62,7 +63,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         if not self.directory:
             self.report({'INFO'}, 'No Folder Selected')
             return {'CANCELLED'}
-        print(self.files[:], "--------------", len(self.files))
+
         if not self.files[:]:
             self.report({'INFO'}, 'No Files Selected')
             return {'CANCELLED'}
@@ -72,6 +73,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         if not (active_node and active_node.bl_idname == 'ShaderNodeBsdfPrincipled'):
             self.report({'INFO'}, 'Select Principled BSDF')
             return {'CANCELLED'}
+
+        addon_prefs = get_addon_prefs(context)
 
 
         return {'FINISHED'}
