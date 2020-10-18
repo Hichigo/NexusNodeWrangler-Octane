@@ -12,7 +12,7 @@ bl_info = {
 
 import bpy
 from bpy.types import Operator, Panel
-from .AddOctaneTextures.add_octane_textures_op import *
+from .add_textures.add_octane_textures_op import *
 
 addon_keymaps = []
 kmi_defs = (

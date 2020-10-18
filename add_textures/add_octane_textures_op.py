@@ -62,6 +62,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         if not self.directory:
             self.report({'INFO'}, 'No Folder Selected')
             return {'CANCELLED'}
+        print(self.files[:], "--------------", len(self.files))
         if not self.files[:]:
             self.report({'INFO'}, 'No Files Selected')
             return {'CANCELLED'}
