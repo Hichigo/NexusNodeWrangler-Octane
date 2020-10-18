@@ -2,7 +2,7 @@ bl_info = {
     "name": "Nexus Node Wrangler Octane",
     "author": "Nexus Studio",
     "version": (0, 0, 1),
-    "blender": (2, 90, 0),
+    "blender": (2, 83, 0),
     "location": "Node Editor > alt-shift-T key",
     "description": "",
     "wiki_url": "none",
