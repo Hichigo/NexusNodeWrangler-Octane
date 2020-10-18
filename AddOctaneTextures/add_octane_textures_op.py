@@ -38,13 +38,11 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         type=bpy.types.OperatorFileListElement,
         options={'HIDDEN', 'SKIP_SAVE'}
     )
-
     relative_path: BoolProperty(
         name='Relative Path',
         description='Select the file relative to the blend file',
         default=True
     )
-
     order = [
         "filepath",
         "files",
@@ -61,5 +59,27 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         return check_space(context)
 
     def execute(self, context):
-        pass
+        if not self.directory:
+            self.report({'INFO'}, 'No Folder Selected')
+            return {'CANCELLED'}
+        if not self.files[:]:
+            self.report({'INFO'}, 'No Files Selected')
+            return {'CANCELLED'}
+
+        nodes, links = self.get_nodes_links(context)
+        active_node = nodes.active
+        if not (active_node and active_node.bl_idname == 'ShaderNodeBsdfPrincipled'):
+            self.report({'INFO'}, 'Select Principled BSDF')
+            return {'CANCELLED'}
+
+
         return {'FINISHED'}
+
+    def get_nodes_links(self, context):
+        tree = context.space_data.node_tree
+
+        if tree.nodes.active:
+            while tree.nodes.active != context.active_node:
+                tree = tree.nodes.active.node_tree
+
+        return tree.nodes, tree.links
