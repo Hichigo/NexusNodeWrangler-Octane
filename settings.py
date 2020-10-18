@@ -46,6 +46,11 @@ class NWOctaneTexturesTags(PropertyGroup):
 class NWOctanePreferences(AddonPreferences):
     bl_idname = __package__
 
+    separators: StringProperty(
+        name='Separators',
+        default='-,--,_,__,.,#',
+        description='Separators for split texture name, via ","')
+
     show_octane_lists: BoolProperty(
         name="Show Octane textures naming tags",
         default=False,
@@ -55,6 +60,9 @@ class NWOctanePreferences(AddonPreferences):
 
     def draw(self, context):
         layout = self.layout
+
+        col = layout.column(align=True)
+        col.prop(self, "separators")
 
         box = layout.box()
         col = box.column(align=True)
