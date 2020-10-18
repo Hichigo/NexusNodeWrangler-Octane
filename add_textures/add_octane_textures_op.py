@@ -78,6 +78,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         addon_prefs = get_addon_prefs(context)
 
+        # TODO: tags
+
         new_texture_nodes = []
         for texture_file in self.files:
             texture_node = nodes.new(type="ShaderNodeTexImage")
@@ -92,6 +94,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             node.location = old_node.location - Vector((0, 300))
 
             old_node = node
+
+        # TODO: create links
 
         return {'FINISHED'}
 
