@@ -1,4 +1,5 @@
 import bpy
+from os import path
 from bpy.props import (
     FloatProperty,
     EnumProperty,
@@ -11,8 +12,8 @@ from bpy.props import (
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
 from mathutils import Vector
-from os import path
 from ..utils import get_separators, get_node_inputs_with_tags
+
 
 def check_space(context):
     space = context.space_data
@@ -62,6 +63,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         return check_space(context)
 
     def execute(self, context):
+        """ main algorithm import textures, create nodes and links nodes """
         if not self.directory:
             self.report({'INFO'}, 'No Folder Selected')
             return {'CANCELLED'}
@@ -78,29 +80,20 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         node_inputs_with_tags = get_node_inputs_with_tags()
 
-        # TODO: tags
-        # for input_name, input in node_inputs_with_tags.items():
-        #     print(input_name, input)
-
         # new_texture_nodes = []
-        seperators = get_separators()
         for texture_file in self.files:
             # texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
             texture_path = path.join(self.directory, texture_file.name)
             texture_name_parts = path.splitext(texture_file.name)[0]
 
-            for sep in seperators:
-                texture_name_parts = texture_name_parts.replace(sep, ' ')
-            texture_name_parts = texture_name_parts.lower()
+            texture_name_parts = self.split_texture_name(texture_name=texture_name_parts)
 
             if path.isfile(texture_path):
-                type_founded = False
-                for input_name, input in node_inputs_with_tags.items():
-                    for tag in input['tags']:
-                        tag = tag.lower()
-                        if tag in texture_name_parts:
-                            input['img_path'] = texture_path
-                            break
+                self.set_texture_type_by_tag(
+                    node_inputs_with_tags=node_inputs_with_tags,
+                    texture_name_parts=texture_name_parts,
+                    texture_path=texture_path
+                )
 
         print(node_inputs_with_tags)
 
@@ -123,6 +116,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         return {'FINISHED'}
 
     def get_nodes_links(self, context):
+        """ returned nodes and links """
         tree = context.space_data.node_tree
 
         if tree.nodes.active:
@@ -130,3 +124,20 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
                 tree = tree.nodes.active.node_tree
 
         return tree.nodes, tree.links
+
+    def split_texture_name(self, texture_name):
+        """ split texture name by separators """
+        seperators = get_separators()
+        for sep in seperators:
+            texture_name = texture_name.replace(sep, ' ')
+        texture_name = texture_name.lower()
+        return texture_name
+
+    def set_texture_type_by_tag(self, node_inputs_with_tags, texture_name_parts, texture_path):
+        """ find by tag input object and remember texture path """
+        for input_name, input_obj in node_inputs_with_tags.items():
+            for tag in input_obj['tags']:
+                tag = tag.lower()
+                if tag in texture_name_parts:
+                    input_obj['img_path'] = texture_path
+                    return
