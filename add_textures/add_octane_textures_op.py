@@ -12,7 +12,7 @@ from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
 from mathutils import Vector
 from os import path
-from ..utils import get_node_inputs_with_tags
+from ..utils import get_separators, get_node_inputs_with_tags
 
 def check_space(context):
     space = context.space_data
@@ -79,26 +79,46 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         node_inputs_with_tags = get_node_inputs_with_tags()
 
         # TODO: tags
-        for input_name, input in node_inputs_with_tags.items():
-            print(input_name, input)
+        # for input_name, input in node_inputs_with_tags.items():
+        #     print(input_name, input)
 
-        new_texture_nodes = []
+        # new_texture_nodes = []
+        seperators = get_separators()
         for texture_file in self.files:
-            texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
-            if texture_file.name != '':
-                img = bpy.data.images.load(path.join(self.directory, texture_file.name))
-                texture_node.image = img
-                new_texture_nodes.append(texture_node)
+            # texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
+            texture_path = path.join(self.directory, texture_file.name)
+            texture_name_parts = path.splitext(texture_file.name)[0]
 
-        old_node = new_texture_nodes[0]
-        old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
-        for node in new_texture_nodes:
-            node.location = old_node.location - Vector((0, 300))
+            for sep in seperators:
+                texture_name_parts = texture_name_parts.replace(sep, ' ')
+            texture_name_parts = texture_name_parts.lower()
 
-            old_node = node
+            if path.isfile(texture_path):
+                type_founded = False
+                for input_name, input in node_inputs_with_tags.items():
+                    for tag in input['tags']:
+                        tag = tag.lower()
+                        if tag in texture_name_parts:
+                            input['img_path'] = texture_path
+                            break
+
+        print(node_inputs_with_tags)
+
+
+
+                # img = bpy.data.images.load(path.join(self.directory, texture_file.name))
+                # texture_node.image = img
+                # new_texture_nodes.append(texture_node)
+
+        # old_node = new_texture_nodes[0]
+        # old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
+        # for node in new_texture_nodes:
+        #     node.location = old_node.location - Vector((0, 300))
+
+        #     old_node = node
 
         # TODO: create links
-        link = links.new(active_node.inputs["Albedo color"], new_texture_nodes[0].outputs[0])
+        # link = links.new(active_node.inputs["Albedo color"], new_texture_nodes[0].outputs[0])
 
         return {'FINISHED'}
 
