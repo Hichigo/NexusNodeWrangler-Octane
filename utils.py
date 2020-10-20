@@ -5,26 +5,49 @@ def get_node_inputs_with_tags():
     tags = addon_prefs.ocatane_textures_tags
 
     node_inputs_with_tags = {
-        "Displacement": {
-            "tags": tags.displacement.split(' ')
+        "Transmission": {
+            "tags": tags.transmission.split(' '),
+            "img_path": ''
         },
-        "Base Color": {
-            "tags": tags.base_color.split(' ')
+        "Albedo color": {
+            "tags": tags.albedo_color.split(' '),
+            "img_path": ''
         },
-        "Subsurface Color": {
-            "tags": tags.sss_color.split(' ')
+        "Ambient occlusion": {
+            "tags": tags.ambient_occlusion.split(' '),
+            "img_path": ''
         },
         "Metallic": {
-            "tags": tags.metallic.split(' ')
+            "tags": tags.metallic.split(' '),
+            "img_path": ''
         },
         "Specular": {
-            "tags": tags.specular.split(' ')
+            "tags": tags.specular.split(' '),
+            "img_path": ''
         },
         "Roughness": {
-            "tags": tags.rough.split(' ')
+            "tags": tags.roughness.split(' '),
+            "img_path": ''
+        },
+        "Gloss": {
+            "tags": tags.gloss.split(' '),
+            "img_path": ''
+        },
+        "Opacity": {
+            "tags": tags.opacity.split(' '),
+            "img_path": ''
+        },
+        "Bump": {
+            "tags": tags.bump.split(' '),
+            "img_path": ''
         },
         "Normal": {
-            "tags": tags.normal.split(' ')
+            "tags": tags.normal.split(' '),
+            "img_path": ''
+        },
+        "Displacement": {
+            "tags": tags.displacement.split(' '),
+            "img_path": ''
         }
     }
 
