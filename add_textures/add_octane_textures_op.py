@@ -72,8 +72,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         nodes, links = self.get_nodes_links(context)
         active_node = nodes.active
-        if not (active_node and active_node.bl_idname == 'ShaderNodeBsdfPrincipled'):
-            self.report({'INFO'}, 'Select Principled BSDF')
+        if not (active_node and active_node.bl_idname == 'ShaderNodeOctUniversalMat'):
+            self.report({'INFO'}, 'Select Universal Octane material')
             return {'CANCELLED'}
 
         node_inputs_with_tags = get_node_inputs_with_tags()
@@ -84,7 +84,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         new_texture_nodes = []
         for texture_file in self.files:
-            texture_node = nodes.new(type="ShaderNodeTexImage")
+            texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
             if texture_file.name != '':
                 img = bpy.data.images.load(path.join(self.directory, texture_file.name))
                 texture_node.image = img
@@ -98,7 +98,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             old_node = node
 
         # TODO: create links
-        link = links.new(active_node.inputs["Base Color"], new_texture_nodes[0].outputs[0])
+        link = links.new(active_node.inputs["Albedo color"], new_texture_nodes[0].outputs[0])
 
         return {'FINISHED'}
 
