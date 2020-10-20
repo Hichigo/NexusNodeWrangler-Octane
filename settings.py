@@ -6,14 +6,18 @@ from bpy.props import (
 )
 
 class NWOctaneTexturesTags(PropertyGroup):
-    base_color: StringProperty(
-        name='Base Color',
+    transmission: StringProperty(
+        name='Transmission',
+        default='add suffixes',
+        description='add description')
+    albedo_color: StringProperty(
+        name='Albedo color',
         default='diffuse diff albedo base col color',
-        description='Naming Components for Base Color maps')
-    sss_color: StringProperty(
-        name='Subsurface Color',
-        default='sss subsurface',
-        description='Naming Components for Subsurface Color maps')
+        description='Naming Components for Albedo Color maps')
+    ambient_occlusion: StringProperty(
+        name='Ambient occlusion',
+        default='add suffixes',
+        description='add description')
     metallic: StringProperty(
         name='Metallic',
         default='metallic metalness metal mtl',
@@ -22,15 +26,7 @@ class NWOctaneTexturesTags(PropertyGroup):
         name='Specular',
         default='specularity specular spec spc',
         description='Naming Components for Specular maps')
-    normal: StringProperty(
-        name='Normal',
-        default='normal nor nrm nrml norm',
-        description='Naming Components for Normal maps')
-    bump: StringProperty(
-        name='Bump',
-        default='bump bmp',
-        description='Naming Components for bump maps')
-    rough: StringProperty(
+    roughness: StringProperty(
         name='Roughness',
         default='roughness rough rgh',
         description='Naming Components for roughness maps')
@@ -38,6 +34,18 @@ class NWOctaneTexturesTags(PropertyGroup):
         name='Gloss',
         default='gloss glossy glossiness',
         description='Naming Components for glossy maps')
+    opacity: StringProperty(
+        name='Opacity',
+        default='add suffixes',
+        description='added description')
+    bump: StringProperty(
+        name='Bump',
+        default='bump bmp',
+        description='Naming Components for bump maps')
+    normal: StringProperty(
+        name='Normal',
+        default='normal nor nrm nrml norm',
+        description='Naming Components for Normal maps')
     displacement: StringProperty(
         name='Displacement',
         default='displacement displace disp dsp height heightmap',
@@ -70,12 +78,14 @@ class NWOctanePreferences(AddonPreferences):
         if self.show_octane_lists:
             tags = self.ocatane_textures_tags
 
-            col.prop(tags, "base_color")
-            col.prop(tags, "sss_color")
+            col.prop(tags, "transmission")
+            col.prop(tags, "albedo_color")
+            col.prop(tags, "ambient_occlusion")
             col.prop(tags, "metallic")
             col.prop(tags, "specular")
-            col.prop(tags, "rough")
+            col.prop(tags, "roughness")
             col.prop(tags, "gloss")
-            col.prop(tags, "normal")
+            col.prop(tags, "opacity")
             col.prop(tags, "bump")
+            col.prop(tags, "normal")
             col.prop(tags, "displacement")
