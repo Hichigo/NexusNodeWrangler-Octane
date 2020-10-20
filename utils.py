@@ -1,5 +1,10 @@
 import bpy
 
+def get_separators():
+    addon_prefs = get_addon_prefs()
+    separators = addon_prefs.separators
+    return separators.split(",")
+
 def get_node_inputs_with_tags():
     addon_prefs = get_addon_prefs()
     tags = addon_prefs.ocatane_textures_tags
