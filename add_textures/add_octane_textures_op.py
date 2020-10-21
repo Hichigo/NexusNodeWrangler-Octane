@@ -93,8 +93,6 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
                     texture_path=texture_path
                 )
 
-        print(node_inputs_with_tags)
-
         for input_name, input_obj in node_inputs_with_tags.items():
             self.create_texture_node(input_obj, input_name, nodes)
 
@@ -105,14 +103,46 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         if node_inputs_with_tags['Displacement']['img_path']:
             node = node_inputs_with_tags['Displacement']['node']
             node.inputs['Gamma'].default_value = 1.0
+
+        skip_nodes = []
+        if node_inputs_with_tags['Albedo color']['img_path'] and node_inputs_with_tags['Ambient occlusion']['img_path']:
+            node = nodes.new(type='ShaderNodeOctMultiplyTex')
+            links.new(
+                node_inputs_with_tags['Albedo color']['node'].outputs[0],
+                node.inputs[0])
+            links.new(
+                node_inputs_with_tags['Ambient occlusion']['node'].outputs[0],
+                node.inputs[1])
+            links.new(
+                node.outputs[0],
+                active_node.inputs['Albedo color'])
+
+            skip_nodes.append('Albedo color')
+            skip_nodes.append('Ambient occlusion')
+
+        if node_inputs_with_tags['Displacement']['img_path']:
+            node = nodes.new(type='ShaderNodeOctDisplacementTex')
+            links.new(
+                node_inputs_with_tags['Displacement']['node'].outputs[0],
+                node.inputs[0])
+            links.new(
+                node.outputs[0],
+                active_node.inputs['Displacement'])
+
+            skip_nodes.append('Displacement')
+
         # old_node = new_texture_nodes[0]
         # old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
         # for node in new_texture_nodes:
         #     node.location = old_node.location - Vector((0, 300))
 
-
         # TODO: create links
-        # link = links.new(active_node.inputs["Albedo color"], new_texture_nodes[0].outputs[0])
+        for input_name, input_obj in node_inputs_with_tags.items():
+            if not input_name in skip_nodes:
+                if input_obj['node']:
+                    link = links.new(
+                        active_node.inputs[input_name],
+                        input_obj['node'].outputs[0])
 
         return {'FINISHED'}
 
