@@ -60,9 +60,9 @@ class NWOctanePreferences(AddonPreferences):
         description='Separators for split texture name, via ","')
 
     show_octane_lists: BoolProperty(
-        name="Show Octane textures naming tags",
+        name='Show Octane textures naming tags',
         default=False,
-        description="Expand this box into a list of all naming tags for octane textures setup"
+        description='Expand this box into a list of all naming tags for octane textures setup'
     )
     ocatane_textures_tags: bpy.props.PointerProperty(type=NWOctaneTexturesTags)
 
@@ -70,22 +70,22 @@ class NWOctanePreferences(AddonPreferences):
         layout = self.layout
 
         col = layout.column(align=True)
-        col.prop(self, "separators")
+        col.prop(self, 'separators')
 
         box = layout.box()
         col = box.column(align=True)
-        col.prop(self, "show_octane_lists", text='Edit tags for auto texture detection in Octane "Main node" setup', toggle=True)
+        col.prop(self, 'show_octane_lists', text='Edit tags for auto texture detection in Octane "Main node" setup', toggle=True)
         if self.show_octane_lists:
             tags = self.ocatane_textures_tags
 
-            col.prop(tags, "transmission")
-            col.prop(tags, "albedo_color")
-            col.prop(tags, "ambient_occlusion")
-            col.prop(tags, "metallic")
-            col.prop(tags, "specular")
-            col.prop(tags, "roughness")
-            col.prop(tags, "gloss")
-            col.prop(tags, "opacity")
-            col.prop(tags, "bump")
-            col.prop(tags, "normal")
-            col.prop(tags, "displacement")
+            col.prop(tags, 'transmission')
+            col.prop(tags, 'albedo_color')
+            col.prop(tags, 'ambient_occlusion')
+            col.prop(tags, 'metallic')
+            col.prop(tags, 'specular')
+            col.prop(tags, 'roughness')
+            col.prop(tags, 'gloss')
+            col.prop(tags, 'opacity')
+            col.prop(tags, 'bump')
+            col.prop(tags, 'normal')
+            col.prop(tags, 'displacement')
