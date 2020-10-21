@@ -140,8 +140,9 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         for input_name, input_obj in node_inputs_with_tags.items():
             if not input_name in skip_nodes:
                 if input_obj['node']:
+                    name_to_connect_input = input_obj['name_to_connect_input']
                     link = links.new(
-                        active_node.inputs[input_name],
+                        active_node.inputs[name_to_connect_input],
                         input_obj['node'].outputs[0])
 
         return {'FINISHED'}
