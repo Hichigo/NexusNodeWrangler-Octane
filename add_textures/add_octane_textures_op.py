@@ -78,6 +78,10 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             self.report({'INFO'}, 'Select Universal Octane material')
             return {'CANCELLED'}
 
+        active_node.transmission_type = 'OCT_BXDF_TRANSMISSION_TYPE_DIFFUSE'
+        active_node.brdf_model = 'OCTANE_BRDF_GGX'
+
+
         node_inputs_with_tags = get_node_inputs_with_tags()
 
         for texture_file in self.files:
