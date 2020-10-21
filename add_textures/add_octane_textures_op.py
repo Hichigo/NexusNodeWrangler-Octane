@@ -102,12 +102,14 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             node = node_inputs_with_tags['Gloss']['node']
             node.inputs['Invert'].default_value = True
 
+        if node_inputs_with_tags['Displacement']['img_path']:
+            node = node_inputs_with_tags['Displacement']['node']
+            node.inputs['Gamma'].default_value = 1.0
         # old_node = new_texture_nodes[0]
         # old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
         # for node in new_texture_nodes:
         #     node.location = old_node.location - Vector((0, 300))
 
-        #     old_node = node
 
         # TODO: create links
         # link = links.new(active_node.inputs["Albedo color"], new_texture_nodes[0].outputs[0])
