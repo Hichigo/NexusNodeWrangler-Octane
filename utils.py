@@ -13,66 +13,77 @@ def get_node_inputs_with_tags():
         'Transmission': {
             'name_to_connect_input': 'Transmission',
             'tags': tags.transmission.split(' '),
+            'create_node': 'ShaderNodeOctImageTex',
             'img_path': '',
             'node': ''
         },
         'Albedo color': {
             'name_to_connect_input': 'Albedo color',
             'tags': tags.albedo_color.split(' '),
+            'create_node': 'ShaderNodeOctImageTex',
             'img_path': '',
             'node': ''
         },
         'Ambient occlusion': {
             'name_to_connect_input': 'Albedo color',
             'tags': tags.ambient_occlusion.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Metallic': {
             'name_to_connect_input': 'Metallic',
             'tags': tags.metallic.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Specular': {
             'name_to_connect_input': 'Specular',
             'tags': tags.specular.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Roughness': {
             'name_to_connect_input': 'Roughness',
             'tags': tags.roughness.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Gloss': {
             'name_to_connect_input': 'Roughness',
             'tags': tags.gloss.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Opacity': {
             'name_to_connect_input': 'Opacity',
             'tags': tags.opacity.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Bump': {
             'name_to_connect_input': 'Bump',
             'tags': tags.bump.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         },
         'Normal': {
             'name_to_connect_input': 'Normal',
             'tags': tags.normal.split(' '),
+            'create_node': 'ShaderNodeOctImageTex',
             'img_path': '',
             'node': ''
         },
         'Displacement': {
             'name_to_connect_input': 'Displacement',
             'tags': tags.displacement.split(' '),
+            'create_node': 'ShaderNodeOctFloatImageTex',
             'img_path': '',
             'node': ''
         }
