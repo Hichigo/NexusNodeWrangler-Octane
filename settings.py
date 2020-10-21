@@ -8,7 +8,7 @@ from bpy.props import (
 class NWOctaneTexturesTags(PropertyGroup):
     transmission: StringProperty(
         name='Transmission',
-        default='add suffixes',
+        default='translucency',
         description='add description')
     albedo_color: StringProperty(
         name='Albedo color',
@@ -16,7 +16,7 @@ class NWOctaneTexturesTags(PropertyGroup):
         description='Naming Components for Albedo Color maps')
     ambient_occlusion: StringProperty(
         name='Ambient occlusion',
-        default='ao',
+        default='ao occlusion',
         description='add description')
     metallic: StringProperty(
         name='Metallic',
@@ -36,11 +36,11 @@ class NWOctaneTexturesTags(PropertyGroup):
         description='Naming Components for glossy maps')
     opacity: StringProperty(
         name='Opacity',
-        default='add suffixes',
+        default='opacity',
         description='added description')
     bump: StringProperty(
         name='Bump',
-        default='bump bmp',
+        default='bump bmp heightmap height h',
         description='Naming Components for bump maps')
     normal: StringProperty(
         name='Normal',
@@ -48,7 +48,7 @@ class NWOctaneTexturesTags(PropertyGroup):
         description='Naming Components for Normal maps')
     displacement: StringProperty(
         name='Displacement',
-        default='displacement displace disp dsp height heightmap',
+        default='displacement displace disp dsp',
         description='Naming Components for displacement maps')
 
 class NWOctanePreferences(AddonPreferences):
