@@ -204,7 +204,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         """ create texture node and load image """
         if input_obj['img_path']:
             img = bpy.data.images.load(input_obj['img_path'])
-            texture_node = nodes.new(type='ShaderNodeOctFloatImageTex')
+            texture_node = nodes.new(type=input_obj['create_node'])
             texture_node.image = img
             texture_node.label = input_name
             input_obj['node'] = texture_node
