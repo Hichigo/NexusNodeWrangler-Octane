@@ -17,7 +17,7 @@ from ..utils import get_separators, get_node_inputs_with_tags
 
 def check_space(context):
     space = context.space_data
-    valid_trees = ["ShaderNodeTree", "CompositorNodeTree", "TextureNodeTree"]
+    valid_trees = ['ShaderNodeTree', 'CompositorNodeTree', 'TextureNodeTree']
 
     return (space.type == 'NODE_EDITOR' and space.node_tree is not None and space.tree_type in valid_trees)
 
@@ -27,9 +27,9 @@ class NWBase:
         return check_space(context)
 
 class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
-    bl_idname = "node.nw_add_textures_for_octane"
-    bl_label = "Add Octane Textures"
-    bl_description = "Add Textures Node Setup for Octane"
+    bl_idname = 'node.nw_add_textures_for_octane'
+    bl_label = 'Add Octane Textures'
+    bl_description = 'Add Textures Node Setup for Octane'
     bl_options = {'REGISTER', 'UNDO'}
 
     directory: StringProperty(
@@ -48,8 +48,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         default=True
     )
     order = [
-        "filepath",
-        "files",
+        'filepath',
+        'files',
     ]
 
     def draw(self, context):
