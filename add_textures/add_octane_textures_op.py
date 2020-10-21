@@ -80,9 +80,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         node_inputs_with_tags = get_node_inputs_with_tags()
 
-        # new_texture_nodes = []
         for texture_file in self.files:
-            # texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
             texture_path = path.join(self.directory, texture_file.name)
             texture_name_parts = path.splitext(texture_file.name)[0]
 
@@ -97,11 +95,12 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         print(node_inputs_with_tags)
 
+        for input_name, input_obj in node_inputs_with_tags.items():
+            self.create_texture_node(input_obj, input_name, nodes)
 
-
-                # img = bpy.data.images.load(path.join(self.directory, texture_file.name))
-                # texture_node.image = img
-                # new_texture_nodes.append(texture_node)
+        if node_inputs_with_tags['Gloss']['img_path']:
+            node = node_inputs_with_tags['Gloss']['node']
+            node.inputs['Invert'].default_value = True
 
         # old_node = new_texture_nodes[0]
         # old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
@@ -141,3 +140,12 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
                 if tag in texture_name_parts:
                     input_obj['img_path'] = texture_path
                     return
+
+    def create_texture_node(self, input_obj, input_name, nodes):
+        """ create texture node and load image """
+        if input_obj['img_path']:
+            img = bpy.data.images.load(input_obj['img_path'])
+            texture_node = nodes.new(type="ShaderNodeOctFloatImageTex")
+            texture_node.image = img
+            texture_node.label = input_name
+            input_obj['node'] = texture_node
