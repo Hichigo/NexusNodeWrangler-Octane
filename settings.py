@@ -16,7 +16,7 @@ class NWOctaneTexturesTags(PropertyGroup):
         description='Naming Components for Albedo Color maps')
     ambient_occlusion: StringProperty(
         name='Ambient occlusion',
-        default='add suffixes',
+        default='ao',
         description='add description')
     metallic: StringProperty(
         name='Metallic',
