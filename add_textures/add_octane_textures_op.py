@@ -95,6 +95,14 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         for input_name, input_obj in node_inputs_with_tags.items():
             self.create_texture_node(input_obj, input_name, nodes)
 
+        # relocate nodes
+        old_node_location = Vector((active_node.location.x-800, active_node.location.y+1000))
+        for input_name, input_obj in node_inputs_with_tags.items():
+            if input_obj['node']:
+                input_obj['node'].location = old_node_location - Vector((0, 350))
+                old_node_location = input_obj['node'].location
+
+        # set default settings node
         if node_inputs_with_tags['Gloss']['img_path']:
             node = node_inputs_with_tags['Gloss']['node']
             node.inputs['Invert'].default_value = True
@@ -105,52 +113,62 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         skip_nodes = []
         if node_inputs_with_tags['Albedo color']['img_path'] and node_inputs_with_tags['Ambient occlusion']['img_path']:
-            node = nodes.new(type='ShaderNodeOctMultiplyTex')
-            node.location = Vector((active_node.location.x-400, active_node.location.y))
+            node_albedo = node_inputs_with_tags['Albedo color']['node']
+            node_ao = node_inputs_with_tags['Ambient occlusion']['node']
+            node_multiply = nodes.new(type='ShaderNodeOctMultiplyTex')
+            node_multiply.location = Vector((active_node.location.x-400, node_ao.location.y))
             links.new(
-                node_inputs_with_tags['Albedo color']['node'].outputs[0],
-                node.inputs[0])
+                node_albedo.outputs[0],
+                node_multiply.inputs[0])
             links.new(
-                node_inputs_with_tags['Ambient occlusion']['node'].outputs[0],
-                node.inputs[1])
+                node_ao.outputs[0],
+                node_multiply.inputs[1])
             links.new(
-                node.outputs[0],
+                node_multiply.outputs[0],
                 active_node.inputs['Albedo color'])
 
             skip_nodes.append('Albedo color')
             skip_nodes.append('Ambient occlusion')
 
         if node_inputs_with_tags['Displacement']['img_path']:
-            node = nodes.new(type='ShaderNodeOctDisplacementTex')
-            node.location = Vector((active_node.location.x-400, active_node.location.y-1400))
+            node_displacement = node_inputs_with_tags['Displacement']['node']
+            node_displace_tex = nodes.new(type='ShaderNodeOctDisplacementTex')
+            node_displace_tex.location = Vector((active_node.location.x-400, node_displacement.location.y))
             links.new(
-                node_inputs_with_tags['Displacement']['node'].outputs[0],
-                node.inputs[0])
+                node_displacement.outputs[0],
+                node_displace_tex.inputs[0])
             links.new(
-                node.outputs[0],
+                node_displace_tex.outputs[0],
                 active_node.inputs['Displacement'])
 
             skip_nodes.append('Displacement')
 
-        # old_node = new_texture_nodes[0]
-        # old_node.location = Vector((active_node.location.x-500, active_node.location.y+1000))
-        # for node in new_texture_nodes:
-        #     node.location = old_node.location - Vector((0, 300))
-
-        # TODO: create links
+        # create links
         for input_name, input_obj in node_inputs_with_tags.items():
             if not input_name in skip_nodes:
                 if input_obj['node']:
                     name_to_connect_input = input_obj['name_to_connect_input']
-                    link = links.new(
+                    links.new(
                         active_node.inputs[name_to_connect_input],
                         input_obj['node'].outputs[0])
 
-        old_node_location = Vector((active_node.location.x-800, active_node.location.y+1000))
+        # created transform and UV nodes
+        node_full_transform = nodes.new(type='ShaderNodeOctFullTransform')
+        node_full_transform.location = Vector((active_node.location.x-1200, active_node.location.y))
+
+        node_UV = nodes.new(type='ShaderNodeOctUVWProjection')
+        node_UV.location = Vector((active_node.location.x-1200, active_node.location.y-800))
+
+        # linked textures with Transform and UV nodes
         for input_name, input_obj in node_inputs_with_tags.items():
             if input_obj['node']:
-                input_obj['node'].location = old_node_location - Vector((0, 350))
-                old_node_location = input_obj['node'].location
+                links.new(
+                    node_full_transform.outputs[0],
+                    input_obj['node'].inputs['Transform'])
+
+                links.new(
+                    node_UV.outputs[0],
+                    input_obj['node'].inputs['Projection'])
 
 
         return {'FINISHED'}
