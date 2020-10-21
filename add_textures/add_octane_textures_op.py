@@ -85,7 +85,6 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
             texture_name_parts = path.splitext(texture_file.name)[0]
 
             texture_name_parts = self.split_texture_name(texture_name=texture_name_parts)
-
             if path.isfile(texture_path):
                 self.set_texture_type_by_tag(
                     node_inputs_with_tags=node_inputs_with_tags,
@@ -107,6 +106,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         skip_nodes = []
         if node_inputs_with_tags['Albedo color']['img_path'] and node_inputs_with_tags['Ambient occlusion']['img_path']:
             node = nodes.new(type='ShaderNodeOctMultiplyTex')
+            node.location = Vector((active_node.location.x-400, active_node.location.y))
             links.new(
                 node_inputs_with_tags['Albedo color']['node'].outputs[0],
                 node.inputs[0])
@@ -122,6 +122,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
 
         if node_inputs_with_tags['Displacement']['img_path']:
             node = nodes.new(type='ShaderNodeOctDisplacementTex')
+            node.location = Vector((active_node.location.x-400, active_node.location.y-1400))
             links.new(
                 node_inputs_with_tags['Displacement']['node'].outputs[0],
                 node.inputs[0])
@@ -144,6 +145,13 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
                     link = links.new(
                         active_node.inputs[name_to_connect_input],
                         input_obj['node'].outputs[0])
+
+        old_node_location = Vector((active_node.location.x-800, active_node.location.y+1000))
+        for input_name, input_obj in node_inputs_with_tags.items():
+            if input_obj['node']:
+                input_obj['node'].location = old_node_location - Vector((0, 350))
+                old_node_location = input_obj['node'].location
+
 
         return {'FINISHED'}
 
