@@ -7,7 +7,7 @@ class NWAddOctaneTexturesTest(TestCase):
     def setUp(self):
         self.add_octane_textures = NWAddOctaneTextures()
 
-    def split_texture_name_test(self):
+    def test_split_texture_name(self):
         print("sadas")
         texture_name_splited = self.add_octane_textures.split_texture_name("asd_asd-asd.ds")
         self.assertEqual(texture_name_splited, "asd asd asd ds")
