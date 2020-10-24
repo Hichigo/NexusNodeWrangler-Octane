@@ -65,17 +65,17 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
     def execute(self, context):
         """ main algorithm import textures, create nodes and links nodes """
         if not self.directory:
-            self.report({'INFO'}, 'No Folder Selected')
+            self.report({'WARNING'}, 'No Folder Selected')
             return {'CANCELLED'}
 
         if not self.files[:]:
-            self.report({'INFO'}, 'No Files Selected')
+            self.report({'WARNING'}, 'No Files Selected')
             return {'CANCELLED'}
 
         nodes, links = self.get_nodes_links(context)
         active_node = nodes.active
         if not (active_node and active_node.bl_idname == 'ShaderNodeOctUniversalMat'):
-            self.report({'INFO'}, 'Select Universal Octane material')
+            self.report({'WARNING'}, 'Select Universal Octane material')
             return {'CANCELLED'}
 
         active_node.transmission_type = 'OCT_BXDF_TRANSMISSION_TYPE_DIFFUSE'
@@ -160,8 +160,8 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
         node_full_transform = nodes.new(type='ShaderNodeOctFullTransform')
         node_full_transform.location = Vector((active_node.location.x-1200, active_node.location.y))
 
-        node_UV = nodes.new(type='ShaderNodeOctUVWProjection')
-        node_UV.location = Vector((active_node.location.x-1200, active_node.location.y-800))
+        node_uv = nodes.new(type='ShaderNodeOctUVWProjection')
+        node_uv.location = Vector((active_node.location.x-1200, active_node.location.y-800))
 
         # linked textures with Transform and UV nodes
         for input_name, input_obj in node_inputs_with_tags.items():
@@ -171,7 +171,7 @@ class NWAddOctaneTextures(Operator, NWBase, ImportHelper):
                     input_obj['node'].inputs['Transform'])
 
                 links.new(
-                    node_UV.outputs[0],
+                    node_uv.outputs[0],
                     input_obj['node'].inputs['Projection'])
 
 
